@@ -16,6 +16,8 @@ python-dotenv = "^0.21.0"
 psycopg2-binary = "^2.9.4"
 pydantic = {extras = ["email"], version = "^1.10.2"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-jose = "^3.3.0"
+python-multipart = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 pynvim = "^0.4.3"
@@ -40,3 +42,9 @@ line-length = 88
 ignore = ['E501', 'W503', 'E203', 'E402', 'E712']
 max-line-length = 88
 exclude = ['.git', '*migrations*', 'db/base.py']
+
+[tool.mypy]
+disable_error_code = ['attr-defined', 'import', 'valid-type']
+
+[tool.pytest.ini_options]
+markers = ["integration", "unit"]

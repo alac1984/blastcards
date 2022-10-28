@@ -1,4 +1,3 @@
-# type: ignore[attrs-defined]
 from typing import Any
 from typing import Generator
 

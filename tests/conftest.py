@@ -2,14 +2,19 @@ from typing import Any
 from typing import Generator
 
 import pytest
+from datetime import datetime, timedelta
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from jose import jwt
 
 from apis.base import api_router
 from db.base import Base
 from db.session import get_db
+from db.models.user import User
+from core.config import settings
+from core.hashing import Hasher
 
 
 def start_application() -> FastAPI:
@@ -18,7 +23,7 @@ def start_application() -> FastAPI:
     return app
 
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./test_db.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
@@ -65,3 +70,37 @@ def client(
     app.dependency_overrides[get_db] = _get_test_db
     with TestClient(app) as client:
         yield client
+
+
+@pytest.fixture(scope="function")
+def init_db(db_session):
+    """
+    To be used by all tests that need some initial data
+    """
+    hashed_password = Hasher.get_password_hash("123456789")
+    superuser = User(
+        username="superuser",
+        email="superuser@test.com",
+        hashed_password=hashed_password,
+        is_active=True,
+        is_superuser=False,
+    )
+    user = User(
+        username="user",
+        email="user@test.com",
+        hashed_password=hashed_password,
+        is_active=True,
+        is_superuser=True,
+    )
+    db_session.add(superuser)
+    db_session.add(user)
+    db_session.flush()
+    yield db_session
+
+
+@pytest.fixture(scope="module")
+def test_token():
+    expire = datetime.utcnow() + timedelta(seconds=20)
+    to_encode = {"sub": "user@test.com", "exp": expire}
+    token = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    return token

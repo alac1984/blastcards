@@ -4,9 +4,9 @@ from fastapi import status
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
-from .route_login import get_current_user_from_token
-from db.repository.user import (
-    repo_get_user,
+from .utils import get_current_user_from_token
+from db.repository.users import (
+    repo_get_user_by_id,
     repo_create_user,
     repo_create_superuser,
     repo_delete_user,
@@ -14,8 +14,7 @@ from db.repository.user import (
 )
 from db.session import get_db
 from db.models.user import User
-from schemas.user import ShowUser
-from schemas.user import UserCreate
+from schemas.users import UserCreate, ShowUser, ShowSuperuser
 
 router = APIRouter()
 
@@ -26,11 +25,11 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/create/super/", response_model=ShowUser)
+@router.post("/create/super/", response_model=ShowSuperuser)
 def create_superuser(
     user: UserCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user_from_token),
+    # current_user: User = Depends(get_current_user_from_token),
 ):
     user = repo_create_superuser(user=user, db=db)
     return user
@@ -38,7 +37,7 @@ def create_superuser(
 
 @router.get("/get/{user_id}", response_model=ShowUser)
 def get_user(user_id: int, db: Session = Depends(get_db)):
-    user = repo_get_user(user_id, db)
+    user = repo_get_user_by_id(user_id, db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -64,7 +63,7 @@ def delete_user(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user_from_token),
 ):
-    if current_user.is_superuser:
+    if current_user.id == user_id:
         result = repo_delete_user(user_id, db)
         if result:
             return {"detail": f"User with id {user_id} is deleted"}

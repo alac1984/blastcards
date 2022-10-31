@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from core.hashing import Hasher
 from db.models.user import User
-from schemas.user import UserCreate
+from schemas.users import UserCreate
 
 
 def repo_create_user(user: UserCreate, db: Session):
@@ -36,8 +36,14 @@ def repo_create_superuser(user: UserCreate, db: Session):
     return user
 
 
-def repo_get_user(user_id: int, db: Session):
+def repo_get_user_by_id(user_id: int, db: Session):
     user = db.query(User).filter(User.id == user_id).first()
+
+    return user
+
+
+def repo_get_user_by_email(email: str, db: Session):
+    user = db.query(User).filter(User.email == email).first()
 
     return user
 
@@ -50,14 +56,9 @@ def repo_update_user(user_id: int, user: UserCreate, db: Session):
     existing_user = db.query(User).filter(User.id == user_id).first()
     if not existing_user:
         return None  # Maybe is better to raise an error here
-    # Hashing password if it's been changed
-    if Hasher.verify_password(user.password, existing_user.hashed_password):
-        user.password = existing_user.password
-    else:
-        user.password = Hasher.get_password_hash(user.password)
     # Changing values
     existing_user.username = user.username
-    existing_user.hashed_password = user.password
+    existing_user.hashed_password = Hasher.get_password_hash(user.password)
     existing_user.email = user.email
     db.commit()
 

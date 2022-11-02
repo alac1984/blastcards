@@ -41,7 +41,7 @@ line-length = 88
 [tool.flake8]
 ignore = ['E501', 'W503', 'E203', 'E402', 'E712']
 max-line-length = 88
-exclude = ['.git', '*migrations*', 'db/base.py']
+exclude = ['.git', 'migrations', 'db/base.py']
 
 [tool.mypy]
 disable_error_code = ['attr-defined', 'import', 'valid-type']

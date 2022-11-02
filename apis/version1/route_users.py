@@ -5,16 +5,16 @@ from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
 from .utils import get_current_user_from_token
-from db.repository.users import (
-    repo_get_user_by_id,
-    repo_create_user,
-    repo_create_superuser,
-    repo_delete_user,
-    repo_update_user,
-)
-from db.session import get_db
 from db.models.user import User
-from schemas.users import UserCreate, ShowUser, ShowSuperuser
+from db.repository.users import repo_create_superuser
+from db.repository.users import repo_create_user
+from db.repository.users import repo_delete_user
+from db.repository.users import repo_get_user_by_id
+from db.repository.users import repo_update_user
+from db.session import get_db
+from schemas.users import ShowSuperuser
+from schemas.users import ShowUser
+from schemas.users import UserCreate
 
 router = APIRouter()
 

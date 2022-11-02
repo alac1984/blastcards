@@ -1,4 +1,5 @@
 import pytest
+
 from db.base_class import Base
 
 

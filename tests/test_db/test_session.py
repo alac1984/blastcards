@@ -1,7 +1,9 @@
-import pytest
-from db.session import get_db
-from sqlalchemy.orm import Session
 from typing import Generator
+
+import pytest
+from sqlalchemy.orm import Session
+
+from db.session import get_db
 
 
 @pytest.mark.integration

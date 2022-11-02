@@ -1,15 +1,18 @@
-from fastapi import Depends
-from fastapi.security import OAuth2PasswordBearer
-from sqlalchemy.orm import Session
 from typing import Optional
-from fastapi import status, HTTPException
-from jose import JWTError, jwt
 
-from db.session import get_db
-from db.models.user import User
-from core.hashing import Hasher
-from db.repository.login import get_user_by_email
+from fastapi import Depends
+from fastapi import HTTPException
+from fastapi import status
+from fastapi.security import OAuth2PasswordBearer
+from jose import jwt
+from jose import JWTError
+from sqlalchemy.orm import Session
+
 from core.config import settings
+from core.hashing import Hasher
+from db.models.user import User
+from db.repository.login import get_user_by_email
+from db.session import get_db
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login/token")

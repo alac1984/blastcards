@@ -1,6 +1,7 @@
 import pytest
-from db.repository.login import get_user_by_email
+
 from db.models.user import User
+from db.repository.login import get_user_by_email
 
 
 @pytest.mark.integration

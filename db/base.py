@@ -1,3 +1,3 @@
-from db.base_class import Base
-from db.models.user import User
-from db.models.set import Set
+from db.base_class import Base  # noqa: F401
+from db.models.set import Set  # noqa: F401
+from db.models.user import User  # noqa: F401

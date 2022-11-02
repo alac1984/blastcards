@@ -1,15 +1,14 @@
 import pytest
-from schemas.users import UserCreate
+
 from core.hashing import Hasher
-from db.repository.users import (
-    repo_create_user,
-    repo_create_superuser,
-    repo_get_user_by_id,
-    repo_get_user_by_email,
-    repo_update_user,
-    repo_delete_user,
-)
 from db.models.user import User
+from db.repository.users import repo_create_superuser
+from db.repository.users import repo_create_user
+from db.repository.users import repo_delete_user
+from db.repository.users import repo_get_user_by_email
+from db.repository.users import repo_get_user_by_id
+from db.repository.users import repo_update_user
+from schemas.users import UserCreate
 
 
 @pytest.mark.integration

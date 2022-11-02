@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Depends, status
-from fastapi.exceptions import HTTPException
+from fastapi import APIRouter
+from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from .utils import get_current_user_from_token
+from db.models.user import User
 from db.repository.sets import (
     repo_create_set,
 )
 from db.session import get_db
-from db.models.user import User
-from schemas.sets import SetCreate, SetShow
+from schemas.sets import SetCreate
+from schemas.sets import SetShow
 
 router = APIRouter()
 

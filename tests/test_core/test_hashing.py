@@ -1,6 +1,6 @@
 import pytest
+
 from core.hashing import Hasher
-from passlib.context import CryptContext
 
 
 @pytest.mark.unit

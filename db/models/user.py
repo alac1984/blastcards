@@ -1,7 +1,5 @@
-from sqlalchemy import Boolean
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import String
+from sqlalchemy import Boolean, Column, Integer, String, DateTime
+from datetime import datetime
 
 from db.base_class import Base
 
@@ -13,10 +11,13 @@ class User(Base):
     hashed_password = Column(String(), nullable=False)
     is_active = Column(Boolean(), default=True)
     is_superuser = Column(Boolean(), default=False)
+    created_on = Column(DateTime(), default=datetime.now)
+    updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
 
     def __repr__(self):
         return (
             f"User(id={self.id}, username={self.username}, "
             f"email={self.email}, is_active={self.is_active}, "
-            f"is_superuser={self.is_superuser})"
+            f"is_superuser={self.is_superuser}, created_on={self.created_on}, "
+            f"updated_on={self.updated_on}"
         )

@@ -22,6 +22,11 @@ router = APIRouter()
 @router.post("/create/", response_model=ShowUser)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     user = repo_create_user(user=user, db=db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User with this username already exists",
+        )
     return user
 
 

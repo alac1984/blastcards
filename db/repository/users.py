@@ -1,4 +1,5 @@
 # type: ignore[call-arg]
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.hashing import Hasher
@@ -7,16 +8,19 @@ from schemas.users import UserCreate
 
 
 def repo_create_user(user: UserCreate, db: Session):
-    user = User(
-        username=user.username,
-        email=user.email,
-        hashed_password=Hasher.get_password_hash(user.password),
-        is_active=True,
-        is_superuser=False,
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+    try:
+        user = User(
+            username=user.username,
+            email=user.email,
+            hashed_password=Hasher.get_password_hash(user.password),
+            is_active=True,
+            is_superuser=False,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    except IntegrityError:
+        return False
 
     return user
 

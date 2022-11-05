@@ -51,13 +51,17 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     return user
 
 
-@router.put("/update/{user_id}", response_model=ShowUser)
-def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db)):
-    user = repo_update_user(user_id=user_id, user=user, db=db)
+@router.put("/update", response_model=ShowUser)
+def update_user(
+    changes: UserCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user_from_token),
+):
+    user = repo_update_user(user_id=current_user.id, changes=changes, db=db)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id {user_id} does not exist",
+            detail=f"User with id {current_user.id} does not exist",
         )
     return user
 

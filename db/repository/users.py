@@ -52,7 +52,7 @@ def repo_get_user_by_email(email: str, db: Session):
     return user
 
 
-def repo_update_user(user_id: int, user: UserCreate, db: Session):
+def repo_update_user(user_id: int, changes: UserCreate, db: Session):
     """
     For user to change its own user data. It won't change is_active
     and is_superuser attributes.
@@ -61,9 +61,9 @@ def repo_update_user(user_id: int, user: UserCreate, db: Session):
     if not existing_user:
         return None  # Maybe is better to raise an error here
     # Changing values
-    existing_user.username = user.username
-    existing_user.hashed_password = Hasher.get_password_hash(user.password)
-    existing_user.email = user.email
+    existing_user.username = changes.username
+    existing_user.hashed_password = Hasher.get_password_hash(changes.password)
+    existing_user.email = changes.email
     db.commit()
 
     return existing_user

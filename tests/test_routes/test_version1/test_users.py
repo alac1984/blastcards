@@ -39,21 +39,22 @@ def test_get_user(client, init_db):
 
 
 @pytest.mark.integration
-def test_update_user(client, init_db):
+def test_update_user(client, init_db, auth_headers):
     data_changed = {
         "username": "testuser_changed",
         "email": "testuser_changed@test.com",
         "password": "testing_changed",
     }
-    response = client.put("users/update/1", json.dumps(data_changed))
+    response = client.put(
+        "users/update", json.dumps(data_changed), headers=auth_headers
+    )
     assert response.status_code == 200
     assert response.json()["username"] == "testuser_changed"
     assert response.json()["email"] == "testuser_changed@test.com"
 
 
 @pytest.mark.integration
-def test_delete_user(client, init_db, test_token):
-    headers = {"Authorization": f"Bearer {test_token}"}
-    response = client.delete("/users/delete/2", headers=headers)
+def test_delete_user(client, init_db, auth_headers):
+    response = client.delete("/users/delete/2", headers=auth_headers)
     assert response.status_code == 200
     assert response.json()["detail"] == "User with id 2 is deleted"

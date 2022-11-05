@@ -58,7 +58,7 @@ def test_repo_update_user(init_db):
         password="modified_pass",
     )
 
-    user_with_changes = repo_update_user(user_id=2, user=changes, db=init_db)
+    user_with_changes = repo_update_user(user_id=2, changes=changes, db=init_db)
 
     assert user_with_changes.username == "testuser_mod"
     assert user_with_changes.email == "testuser_mod@test.com"

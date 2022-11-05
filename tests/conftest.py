@@ -104,4 +104,11 @@ def test_token():
     expire = datetime.utcnow() + timedelta(seconds=20)
     to_encode = {"sub": "user@test.com", "exp": expire}
     token = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
     return token
+
+
+@pytest.fixture(scope="module")
+def auth_headers(test_token):
+    headers = {"Authorization": f"Bearer {test_token}"}
+    return headers

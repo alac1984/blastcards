@@ -66,18 +66,16 @@ def update_user(
     return user
 
 
-@router.delete("/delete/{user_id}")
+@router.delete("/delete")
 def delete_user(
-    user_id: int,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user_from_token),
 ):
-    if current_user.id == user_id:
-        result = repo_delete_user(user_id, db)
-        if result:
-            return {"detail": f"User with id {user_id} is deleted"}
-        else:
-            return {"detail": f"User with id {user_id} not found"}
+    result = repo_delete_user(current_user.id, db)
+    if result:
+        return {"detail": f"User with id {current_user.id} is deleted"}
+    else:
+        return {"detail": f"User with id {current_user.id} not found"}
 
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED, detail="You're not authorized"

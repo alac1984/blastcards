@@ -14,13 +14,17 @@ def test_authenticate_user_success(client, init_db):
 
 @pytest.mark.integration
 def test_authenticate_user_fail_pass(client, init_db):
-    user = authenticate_user("user@test.com", "12345678910", init_db)  # Wrong password
+    user = authenticate_user(
+        "user@test.com", "12345678910", init_db
+    )  # Wrong password
     assert user is None
 
 
 @pytest.mark.integration
 def test_authenticate_user_fail_email(init_db):
-    user = authenticate_user("user@test.com.br", "123456789", init_db)  # Wrong password
+    user = authenticate_user(
+        "user@test.com.br", "123456789", init_db
+    )  # Wrong password
     assert user is None
 
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
+from apis.version1 import route_cardsets
 from apis.version1 import route_general_pages
 from apis.version1 import route_login
-from apis.version1 import route_sets
 from apis.version1 import route_users
 
 
@@ -11,4 +11,4 @@ api_router = APIRouter()
 api_router.include_router(route_general_pages.router, prefix="", tags=["general_pages"])
 api_router.include_router(route_users.router, prefix="/users", tags=["users"])
 api_router.include_router(route_login.router, prefix="/login", tags=["login"])
-api_router.include_router(route_sets.router, prefix="/sets", tags=["sets"])
+api_router.include_router(route_cardsets.router, prefix="/cardsets", tags=["cardsets"])

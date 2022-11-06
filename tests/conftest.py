@@ -14,6 +14,7 @@ from apis.base import api_router
 from core.config import settings
 from core.hashing import Hasher
 from db.base import Base
+from db.models.cardset import Cardset
 from db.models.user import User
 from db.session import get_db
 
@@ -93,8 +94,15 @@ def init_db(db_session):
         is_active=True,
         is_superuser=True,
     )
-    db_session.add(superuser)
-    db_session.add(user)
+    cset1 = Cardset(
+        user_id=1,
+        title="Set 1",
+        description="Descriptive set",
+    )
+    cset2 = Cardset(user_id=2, title="Set 2")
+    cset3 = Cardset(user_id=2, title="Set 3")
+    objects = [superuser, user, cset1, cset2, cset3]
+    db_session.bulk_save_objects(objects)
     db_session.flush()
     yield db_session
 

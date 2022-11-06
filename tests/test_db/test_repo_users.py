@@ -7,6 +7,7 @@ from db.repository.users import repo_create_user
 from db.repository.users import repo_delete_user
 from db.repository.users import repo_get_user_by_email
 from db.repository.users import repo_get_user_by_id
+from db.repository.users import repo_list_users
 from db.repository.users import repo_update_user
 from schemas.users import UserCreate
 
@@ -72,3 +73,11 @@ def test_repo_delete_user(init_db):
 
     assert result
     assert deleted_user is None
+
+
+@pytest.mark.integration
+def test_repo_list_users(init_db):
+    users = repo_list_users(init_db)
+    assert users is not None
+    assert isinstance(users[0], User)
+    assert len(users) == 2

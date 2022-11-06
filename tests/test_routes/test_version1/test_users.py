@@ -59,3 +59,10 @@ def test_delete_user(client, init_db, auth_headers):
     assert response.status_code == 200
     assert isinstance(response.json()["detail"], str)
     assert "deleted" in response.json()["detail"]
+
+
+@pytest.mark.integration
+def test_list_users(client, init_db):
+    response = client.get("/users/get/all")
+    assert response.status_code == 200
+    assert len(response.json()) == 2

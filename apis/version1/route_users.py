@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
@@ -10,6 +12,7 @@ from db.repository.users import repo_create_superuser
 from db.repository.users import repo_create_user
 from db.repository.users import repo_delete_user
 from db.repository.users import repo_get_user_by_id
+from db.repository.users import repo_list_users
 from db.repository.users import repo_update_user
 from db.session import get_db
 from schemas.users import ShowSuperuser
@@ -38,6 +41,13 @@ def create_superuser(
 ):
     user = repo_create_superuser(user=user, db=db)
     return user
+
+
+@router.get("/get/all", response_model=List[ShowUser])
+def list_users(db: Session = Depends(get_db)):
+    result = repo_list_users(db)
+
+    return result
 
 
 @router.get("/get/{user_id}", response_model=ShowUser)

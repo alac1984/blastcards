@@ -79,3 +79,10 @@ def repo_delete_user(user_id: int, db: Session):
     db.commit()
 
     return True
+
+
+def repo_list_users(db: Session):
+    users = db.query(User).order_by(User.id).all()
+    db.commit()
+
+    return users

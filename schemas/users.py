@@ -11,6 +11,7 @@ class UserCreate(BaseModel):
 
 
 class ShowSuperuser(BaseModel):
+    id: int
     username: str
     email: EmailStr
     is_active: bool
@@ -23,6 +24,7 @@ class ShowSuperuser(BaseModel):
 
 
 class ShowUser(BaseModel):
+    id: int
     username: str
     email: EmailStr
     is_active: bool

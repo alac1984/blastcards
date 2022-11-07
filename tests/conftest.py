@@ -117,6 +117,6 @@ def test_token():
 
 
 @pytest.fixture(scope="module")
-def auth_headers(test_token):
+def auth_headers(test_token):  # Auth headers for user2
     headers = {"Authorization": f"Bearer {test_token}"}
     return headers

@@ -15,3 +15,10 @@ def repo_create_cardset(cardset: CardsetCreate, current_user: User, db: Session)
     db.refresh(cardset)
 
     return cardset
+
+
+def repo_list_cardset(current_user: User, db: Session):
+    cardsets = db.query(Cardset).filter(Cardset.user_id == current_user.id).all()
+
+    db.commit()
+    return cardsets

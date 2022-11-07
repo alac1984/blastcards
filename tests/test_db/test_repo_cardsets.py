@@ -1,9 +1,10 @@
 import pytest
 
-from db.repository.cardsets import repo_create_cardset
-from schemas.cardsets import CardsetCreate
 from db.models.cardset import Cardset
 from db.models.user import User
+from db.repository.cardsets import repo_create_cardset
+from db.repository.cardsets import repo_list_cardset
+from schemas.cardsets import CardsetCreate
 
 
 @pytest.mark.integration
@@ -19,3 +20,12 @@ def test_repo_create_set(init_db):
     assert isinstance(cardset, Cardset)
     assert cardset.id == cardset_retrieved.id
     assert cardset.user_id == cardset_retrieved.user_id
+
+
+@pytest.mark.integration
+def test_repo_list_cardsets(init_db):
+    user = init_db.query(User).filter(User.id == 2).first()
+    cardsets = repo_list_cardset(user, init_db)
+
+    assert len(cardsets) == 2
+    assert isinstance(cardsets[0], Cardset)

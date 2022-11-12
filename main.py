@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from apis.base import api_router
+from webapps.base import webapp_router
 from core.config import settings
 
 
 def include_router(app: FastAPI) -> None:
     app.include_router(api_router)
+    app.include_router(webapp_router)
 
 
 def configure_static(app: FastAPI) -> None:

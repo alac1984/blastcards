@@ -39,14 +39,14 @@ def test_get_user(client, init_db):
 
 
 @pytest.mark.integration
-def test_update_user(client, init_db, auth_headers):
+def test_update_user(client, init_db, auth_cookie):
     data_changed = {
         "username": "testuser_changed",
         "email": "testuser_changed@test.com",
         "password": "testing_changed",
     }
     response = client.put(
-        "users/update", json.dumps(data_changed), headers=auth_headers
+        "users/update", json.dumps(data_changed), cookies=auth_cookie
     )
     assert response.status_code == 200
     assert response.json()["username"] == "testuser_changed"
@@ -54,8 +54,8 @@ def test_update_user(client, init_db, auth_headers):
 
 
 @pytest.mark.integration
-def test_delete_user(client, init_db, auth_headers):
-    response = client.delete("/users/delete", headers=auth_headers)
+def test_delete_user(client, init_db, auth_cookie):
+    response = client.delete("/users/delete", cookies=auth_cookie)
     assert response.status_code == 200
     assert isinstance(response.json()["detail"], str)
     assert "deleted" in response.json()["detail"]

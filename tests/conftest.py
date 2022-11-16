@@ -120,3 +120,8 @@ def test_token():
 def auth_headers(test_token):  # Auth headers for user2
     headers = {"Authorization": f"Bearer {test_token}"}
     return headers
+
+
+@pytest.fixture(scope="module")
+def auth_cookie(test_token):
+    return {"access_token": f"Bearer {test_token}"}

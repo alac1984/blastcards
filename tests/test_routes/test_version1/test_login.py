@@ -1,5 +1,6 @@
 import pytest
 from pydantic import BaseModel
+from fastapi import Response
 
 from apis.version1.route_login import login_for_access_token
 
@@ -10,8 +11,9 @@ def test_login_for_access_token(client, init_db):
         username: str
         password: str
 
+    response = Response()
     form_data = FormData(username="user@test.com", password="123456789")
-    access_token = login_for_access_token(form_data, init_db)
+    access_token = login_for_access_token(response, form_data, init_db)
 
     assert isinstance(access_token, dict)
     assert isinstance(access_token["access_token"], str)

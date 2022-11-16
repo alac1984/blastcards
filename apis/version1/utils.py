@@ -1,11 +1,12 @@
 from typing import Optional
+
 from fastapi import Depends
-from fastapi import Request
 from fastapi import HTTPException
+from fastapi import Request
 from fastapi import status
+from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.security import OAuth2
 from fastapi.security.utils import get_authorization_scheme_param
-from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from jose import jwt
 from jose import JWTError
 from sqlalchemy.orm import Session

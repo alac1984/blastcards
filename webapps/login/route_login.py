@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from fastapi import Request
 from fastapi import Depends
-from fastapi.responses import HTMLResponse
+from fastapi import Request
 from fastapi.exceptions import HTTPException
+from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 

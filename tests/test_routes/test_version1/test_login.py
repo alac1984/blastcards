@@ -1,6 +1,6 @@
 import pytest
-from pydantic import BaseModel
 from fastapi import Response
+from pydantic import BaseModel
 
 from apis.version1.route_login import login_for_access_token
 

@@ -20,22 +20,25 @@ def repo_create_user(user: UserCreate, db: Session):
         db.commit()
         db.refresh(user)
     except IntegrityError:
-        return False
+        return None
 
     return user
 
 
 def repo_create_superuser(user: UserCreate, db: Session):
-    user = User(
-        username=user.username,
-        email=user.email,
-        hashed_password=Hasher.get_password_hash(user.password),
-        is_active=True,
-        is_superuser=True,
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+    try:
+        user = User(
+            username=user.username,
+            email=user.email,
+            hashed_password=Hasher.get_password_hash(user.password),
+            is_active=True,
+            is_superuser=True,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    except IntegrityError:
+        return None
 
     return user
 
@@ -58,9 +61,6 @@ def repo_update_user(user_id: int, changes: UserCreate, db: Session):
     and is_superuser attributes.
     """
     existing_user = db.query(User).filter(User.id == user_id).first()
-    if not existing_user:
-        return None  # Maybe is better to raise an error here
-    # Changing values
     existing_user.username = changes.username
     existing_user.hashed_password = Hasher.get_password_hash(changes.password)
     existing_user.email = changes.email

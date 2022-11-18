@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
+from fastapi import Response
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 
@@ -23,24 +24,32 @@ router = APIRouter()
 
 
 @router.post("/create/", response_model=ShowUser)
-def create_user(user: UserCreate, db: Session = Depends(get_db)):
+def create_user(user: UserCreate, response: Response, db: Session = Depends(get_db)):
     user = repo_create_user(user=user, db=db)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this username already exists",
         )
+    response.status_code = status.HTTP_201_CREATED
     return user
 
 
 @router.post("/create/super/", response_model=ShowSuperuser)
 def create_superuser(
     user: UserCreate,
+    response: Response,
     db: Session = Depends(get_db),
     # current_user: User = Depends(get_current_user_from_token),
 ):
-    user = repo_create_superuser(user=user, db=db)
-    return user
+    superuser = repo_create_superuser(user=user, db=db)
+    if not superuser:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Superuser with this username already exists",
+        )
+    response.status_code = status.HTTP_201_CREATED
+    return superuser
 
 
 @router.get("/get/all", response_model=List[ShowUser])
@@ -68,25 +77,17 @@ def update_user(
     current_user: User = Depends(get_current_user_from_token),
 ):
     user = repo_update_user(user_id=current_user.id, changes=changes, db=db)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"User with id {current_user.id} does not exist",
-        )
     return user
 
 
 @router.delete("/delete")
 def delete_user(
+    response: Response,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user_from_token),
 ):
-    result = repo_delete_user(current_user.id, db)
-    if result:
-        return {"detail": f"User with id {current_user.id} is deleted"}
-    else:
-        return {"detail": f"User with id {current_user.id} not found"}
-
-    raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="You're not authorized"
+    repo_delete_user(current_user.id, db)
+    return Response(
+        status_code=status.HTTP_204_NO_CONTENT,
+        content=f"User with id {current_user.id} is deleted",
     )

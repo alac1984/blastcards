@@ -1,9 +1,9 @@
+import asyncio
+import pytest
 from datetime import datetime
 from datetime import timedelta
 from typing import Any
 from typing import Generator
-
-import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from jose import jwt
@@ -116,12 +116,19 @@ def test_token():
     return token
 
 
-@pytest.fixture(scope="module")
-def auth_headers(test_token):  # Auth headers for user2
-    headers = {"Authorization": f"Bearer {test_token}"}
-    return headers
+# @pytest.fixture(scope="module")
+# def auth_headers(test_token):  # Auth headers for user2
+#     headers = {"Authorization": f"Bearer {test_token}"}
+#     return headers
 
 
 @pytest.fixture(scope="module")
 def auth_cookie(test_token):
     return {"access_token": f"Bearer {test_token}"}
+
+
+@pytest.fixture(scope="function")
+def loop():
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()

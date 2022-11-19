@@ -1,16 +1,18 @@
+from datetime import datetime
+from datetime import timedelta
+
 import pytest
-from datetime import datetime, timedelta
-from jose import jwt
 from fastapi import Request
-from fastapi.openapi.models import OAuth2
 from fastapi.exceptions import HTTPException
+from fastapi.openapi.models import OAuth2
+from jose import jwt
 from starlette.datastructures import Headers
 
 from apis.version1.utils import authenticate_user
 from apis.version1.utils import get_current_user_from_token
 from apis.version1.utils import OAuth2PasswordBearerWithCookie
-from db.models.user import User
 from core.config import settings
+from db.models.user import User
 
 
 @pytest.mark.unit
@@ -68,9 +70,7 @@ def test_authenticate_user_success(client, init_db):
 
 @pytest.mark.integration
 def test_authenticate_user_fail_pass(client, init_db):
-    user = authenticate_user(
-        "user@test.com", "12345678910", init_db
-    )  # Wrong password
+    user = authenticate_user("user@test.com", "12345678910", init_db)  # Wrong password
     assert user is None
 
 

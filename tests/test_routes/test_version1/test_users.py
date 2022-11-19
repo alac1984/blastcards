@@ -77,9 +77,7 @@ def test_update_user_success(client, init_db, auth_cookie):
         "email": "testuser_changed@test.com",
         "password": "testing_changed",
     }
-    response = client.put(
-        "users/update", json.dumps(data_changed), cookies=auth_cookie
-    )
+    response = client.put("users/update", json.dumps(data_changed), cookies=auth_cookie)
     assert response.status_code == 200
     assert response.json()["username"] == "testuser_changed"
     assert response.json()["email"] == "testuser_changed@test.com"

@@ -1,9 +1,10 @@
 import asyncio
-import pytest
 from datetime import datetime
 from datetime import timedelta
 from typing import Any
 from typing import Generator
+
+import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from jose import jwt

@@ -2,8 +2,8 @@ from typing import List
 
 from fastapi import APIRouter
 from fastapi import Depends
-from fastapi import status
 from fastapi import Response
+from fastapi import status
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
 

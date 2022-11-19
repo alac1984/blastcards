@@ -9,6 +9,4 @@ api_router = APIRouter()
 
 api_router.include_router(route_users.router, prefix="/users", tags=["users"])
 api_router.include_router(route_login.router, prefix="/login", tags=["login"])
-api_router.include_router(
-    route_cardsets.router, prefix="/cardsets", tags=["cardsets"]
-)
+api_router.include_router(route_cardsets.router, prefix="/cardsets", tags=["cardsets"])

@@ -24,5 +24,5 @@ class User(Base):
             f"User(id={self.id}, username={self.username}, "
             f"email={self.email}, is_active={self.is_active}, "
             f"is_superuser={self.is_superuser}, created_on={self.created_on}, "
-            f"updated_on={self.updated_on}"
+            f"updated_on={self.updated_on})"
         )

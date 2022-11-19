@@ -70,11 +70,7 @@ def repo_update_user(user_id: int, changes: UserCreate, db: Session):
 
 
 def repo_delete_user(user_id: int, db: Session):
-    # TODO: this function should raise a proper exception in case it won't
-    # find the user to be deleted
     user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        return None
     db.delete(user)
     db.commit()
 

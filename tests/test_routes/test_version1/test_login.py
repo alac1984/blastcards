@@ -33,5 +33,6 @@ def test_login_for_access_token_no_user(client, init_db):
 
     with pytest.raises(HTTPException) as exc:
         login_for_access_token(response, form_data, init_db)
-        assert exc.status_code == 401
-        assert exc.detail == "Incorrect username or password"
+
+    assert exc.value.status_code == 401
+    assert exc.value.detail == "Incorrect username or password"

@@ -6,6 +6,7 @@ from typing import Generator
 
 import pytest
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.testclient import TestClient
 from jose import jwt
 from sqlalchemy import create_engine
@@ -25,6 +26,7 @@ def start_application() -> FastAPI:
     app = FastAPI()
     app.include_router(api_router)
     app.include_router(webapp_router)
+    app.mount("/static", StaticFiles(directory="static"), name="static")
     return app
 
 

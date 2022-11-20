@@ -32,7 +32,7 @@ Flake8-pyproject = "^1.1.0"
 pre-commit = "^2.20.0"
 
 [tool.poetry.group.dev.dependencies]
-coverage = "^6.5.0"
+coverage = {extras = ["toml"], version = "^6.5.0"}
 pytest-cov = "^4.0.0"
 
 [build-system]
@@ -52,3 +52,6 @@ disable_error_code = ['attr-defined', 'import', 'valid-type']
 
 [tool.pytest.ini_options]
 markers = ["integration", "unit"]
+
+[tool.coverage.run]
+omit = ['migrations/env.py']

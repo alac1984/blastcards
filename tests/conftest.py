@@ -18,11 +18,13 @@ from db.base import Base
 from db.models.cardset import Cardset
 from db.models.user import User
 from db.session import get_db
+from webapps.base import webapp_router
 
 
 def start_application() -> FastAPI:
     app = FastAPI()
     app.include_router(api_router)
+    app.include_router(webapp_router)
     return app
 
 
@@ -47,11 +49,12 @@ def app() -> Generator[FastAPI, Any, None]:
 @pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
     connection = engine.connect()
-    transaction = connection.begin()
+    # transaction = connection.begin()
     session = SessionTesting(bind=connection)
     yield session  # use this session in tests
     session.close()
-    transaction.rollback()
+    # This rollback below was giving me warnings at pytest
+    # transaction.rollback()
     connection.close()
 
 

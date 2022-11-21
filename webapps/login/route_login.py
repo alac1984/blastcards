@@ -1,3 +1,4 @@
+# type: ignore[arg-type, union-attr]
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Request
@@ -33,7 +34,5 @@ async def login_form_data(request: Request, db: Session = Depends(get_db)):
         except HTTPException:
             form.__dict__.update(msg="")
             form.__dict__.get("errors").append("Incorrect email or password")
-            print(form.__dict__)
-            return templates.TemplateResponse("login.html", form.__dict__)
     print(form.__dict__)
     return templates.TemplateResponse("login.html", form.__dict__)

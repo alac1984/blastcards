@@ -1,6 +1,7 @@
 import pytest
 from fastapi import Request
-from starlette.datastructures import Headers, FormData
+from starlette.datastructures import FormData
+from starlette.datastructures import Headers
 
 from webapps.login.forms import LoginForm
 
